@@ -3,7 +3,7 @@ RUN apk add git python gcc g++ linux-headers make
 WORKDIR /usr/src/app
 
 FROM base as fetch
-ARG NODE_VERSION=v14.17.3
+ARG NODE_VERSION=v16.4.2
 RUN git clone --depth 1 https://github.com/nodejs/node --branch ${NODE_VERSION} --single-branch node
 
 FROM fetch as configure
