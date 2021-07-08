@@ -31,7 +31,7 @@ The most reliable way to do this is with [`buildx`](https://github.com/docker/bu
 
 ### 0. Setup
 Skip this step if you already have docker set up to emulate and build other architectures.
-First you must [install buildx](https://github.com/docker/buildx/#installing)
+First you must [install buildx](https://github.com/docker/buildx/#installing).
 
 ```
 ### Setup qemu for emulation
