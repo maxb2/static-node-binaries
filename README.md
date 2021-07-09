@@ -4,6 +4,12 @@ This provides a method of statically compiliing nodejs for multiple architecture
 Alpine Linux uses the musl library which allows for statically compiling Node.
 Docker provides the means to run Alpine Linux and also to emulate multiple architectures.
 
+I've uploaded binaries that I've built locally to the [Releases page](https://github.com/maxb2/static-node-binaries/releases).
+Binaries built with Github Actions (so you don't have to trust a random internet person) are coming soon!
+
+The reason for this project comes from [leafac/caxa#30](https://github.com/leafac/caxa/issues/30).
+When packaging an application with caxa, it can be useful to provide a statically linked node binary to increase portability.
+
 ## Quick-start
 To produce a statically linked Linux binary on your local machine, run the following:
 
