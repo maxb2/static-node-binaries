@@ -1,5 +1,5 @@
 FROM alpine:3.11.3 as base
-RUN apk add git python gcc g++ linux-headers make
+RUN apk add git python3 gcc g++ linux-headers make
 WORKDIR /usr/src/app
 
 FROM base as fetch
