@@ -53,7 +53,7 @@ jobs:
   make-2:
     name: Make 2
     needs: make-1
-    if: needs.make-1.outputs.fail == 'true'
+    if: needs.make-1.outputs.fail.value == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -80,7 +80,7 @@ jobs:
   make-3:
     name: Make 3
     needs: make-2
-    if: needs.make-2.outputs.fail == 'true'
+    if: needs.make-2.outputs.fail.value == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -107,7 +107,7 @@ jobs:
   make-4:
     name: Make 4
     needs: make-3
-    if: needs.make-3.outputs.fail == 'true'
+    if: needs.make-3.outputs.fail.value == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -134,7 +134,7 @@ jobs:
   make-5:
     name: Make 5
     needs: make-4
-    if: needs.make-4.outputs.fail == 'true'
+    if: needs.make-4.outputs.fail.value == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -161,7 +161,7 @@ jobs:
   make-6:
     name: Make 6
     needs: make-5
-    if: needs.make-5.outputs.fail == 'true'
+    if: needs.make-5.outputs.fail.value == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -188,7 +188,7 @@ jobs:
   make-7:
     name: Make 7
     needs: make-6
-    if: needs.make-6.outputs.fail == 'true'
+    if: needs.make-6.outputs.fail.value == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -216,7 +216,7 @@ jobs:
   make-8:
     name: Make 8
     needs: make-7
-    if: needs.make-7.outputs.fail == 'true'
+    if: needs.make-7.outputs.fail.value == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -244,7 +244,7 @@ jobs:
   make-9:
     name: Make 9
     needs: make-8
-    if: needs.make-8.outputs.fail == 'true'
+    if: needs.make-8.outputs.fail.value == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -271,7 +271,7 @@ jobs:
   make-10:
     name: Make 10
     needs: make-9
-    if: needs.make-9.outputs.fail == 'true'
+    if: needs.make-9.outputs.fail.value == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -298,7 +298,7 @@ jobs:
   make-11:
     name: Make 11
     needs: make-10
-    if: needs.make-10.outputs.fail == 'true'
+    if: needs.make-10.outputs.fail.value == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -325,7 +325,7 @@ jobs:
   make-12:
     name: Make 12
     needs: make-11
-    if: needs.make-11.outputs.fail == 'true'
+    if: needs.make-11.outputs.fail.value == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
