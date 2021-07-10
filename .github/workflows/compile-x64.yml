@@ -1,0 +1,60 @@
+name: Build Docker
+
+on: push
+env:
+  NODE_VERSION="v16.4.2"
+
+
+jobs:
+  configure:
+    name: Configure
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Configure 
+        run: |
+          docker buildx build \
+            --load --push \
+            --build-arg NODE_VERSION=${NODE_VERSION} \
+            --target configure \
+            -t ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial .
+
+  make-1:
+    name: Make 1
+    needs: configure
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Make
+        run: |
+          CONTAINER=$(docker run -it ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c 'timeout 5m make -j $(nproc) || true')
+          docker container commit $CONTAINER ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+          docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+
+  make-2:
+    name: Make 2
+    needs: make-2
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Make
+        run: |
+          CONTAINER=$(docker run -it ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c 'make -j $(nproc)')
+          docker container commit $CONTAINER ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+          docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+
