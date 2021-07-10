@@ -43,7 +43,7 @@ jobs:
 
   make-2:
     name: Make 2
-    needs: make-2
+    needs: make-1
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
