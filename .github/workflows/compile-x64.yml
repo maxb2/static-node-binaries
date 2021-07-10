@@ -36,13 +36,14 @@ jobs:
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
       - name: Make
+        id: make
         continue-on-error: true
         run: |
           docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
 
-      - if: failure()
+      - if: steps.make.outcome == 'failure'
         run: | 
-          echo "BUILD_FAIL=true" >> $GITHUB_ENV
+          echo "::set-output name=fail::true"
 
       - name: Docker Commit
         run: |
@@ -52,7 +53,7 @@ jobs:
   make-2:
     name: Make 2
     needs: make-1
-    if: env.BUILD_FAIL == 'true'
+    if: needs.make-1.outputs.fail == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -65,6 +66,11 @@ jobs:
         continue-on-error: true
         run: |
           docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
+
+      - if: steps.make.outcome == 'failure'
+        run: | 
+          echo "::set-output name=fail::true"
+
 
       - name: Docker Commit
         run: |
@@ -74,7 +80,7 @@ jobs:
   make-3:
     name: Make 3
     needs: make-2
-    if: env.BUILD_FAIL == 'true'
+    if: needs.make-2.outputs.fail == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -88,9 +94,10 @@ jobs:
         run: |
           docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
 
-      - if: failure()
+      - if: steps.make.outcome == 'failure'
         run: | 
-          echo "BUILD_FAIL=true" >> $GITHUB_ENV
+          echo "::set-output name=fail::true"
+
 
       - name: Docker Commit
         run: |
@@ -100,7 +107,7 @@ jobs:
   make-4:
     name: Make 4
     needs: make-3
-    if: env.BUILD_FAIL == 'true'
+    if: needs.make-3.outputs.fail == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -114,9 +121,10 @@ jobs:
         run: |
           docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
 
-      - if: failure()
+      - if: steps.make.outcome == 'failure'
         run: | 
-          echo "BUILD_FAIL=true" >> $GITHUB_ENV
+          echo "::set-output name=fail::true"
+
 
       - name: Docker Commit
         run: |
@@ -126,7 +134,7 @@ jobs:
   make-5:
     name: Make 5
     needs: make-4
-    if: env.BUILD_FAIL == 'true'
+    if: needs.make-4.outputs.fail == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -140,9 +148,10 @@ jobs:
         run: |
           docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
 
-      - if: failure()
+      - if: steps.make.outcome == 'failure'
         run: | 
-          echo "BUILD_FAIL=true" >> $GITHUB_ENV
+          echo "::set-output name=fail::true"
+
 
       - name: Docker Commit
         run: |
@@ -152,7 +161,7 @@ jobs:
   make-6:
     name: Make 6
     needs: make-5
-    if: env.BUILD_FAIL == 'true'
+    if: needs.make-5.outputs.fail == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -166,9 +175,10 @@ jobs:
         run: |
           docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
 
-      - if: failure()
+      - if: steps.make.outcome == 'failure'
         run: | 
-          echo "BUILD_FAIL=true" >> $GITHUB_ENV
+          echo "::set-output name=fail::true"
+
 
       - name: Docker Commit
         run: |
@@ -178,7 +188,7 @@ jobs:
   make-7:
     name: Make 7
     needs: make-6
-    if: env.BUILD_FAIL == 'true'
+    if: needs.make-6.outputs.fail == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -192,9 +202,11 @@ jobs:
         run: |
           docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
 
-      - if: failure()
+      - if: steps.make.outcome == 'failure'
         run: | 
-          echo "BUILD_FAIL=true" >> $GITHUB_ENV
+          echo "::set-output name=fail::true"
+
+
 
       - name: Docker Commit
         run: |
@@ -204,7 +216,7 @@ jobs:
   make-8:
     name: Make 8
     needs: make-7
-    if: env.BUILD_FAIL == 'true'
+    if: needs.make-7.outputs.fail == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -213,14 +225,16 @@ jobs:
       - name: Login to DockerHub Registry
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
-      - if: failure()
-        run: | 
-          echo "BUILD_FAIL=true" >> $GITHUB_ENV
-
       - name: Make
         continue-on-error: true
         run: |
           docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
+
+      - if: steps.make.outcome == 'failure'
+        run: | 
+          echo "::set-output name=fail::true"
+
+
 
       - name: Docker Commit
         run: |
@@ -230,7 +244,7 @@ jobs:
   make-9:
     name: Make 9
     needs: make-8
-    if: env.BUILD_FAIL == 'true'
+    if: needs.make-8.outputs.fail == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -239,14 +253,15 @@ jobs:
       - name: Login to DockerHub Registry
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
-      - if: failure()
-        run: | 
-          echo "BUILD_FAIL=true" >> $GITHUB_ENV
-
       - name: Make
         continue-on-error: true
         run: |
           docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
+
+      - if: steps.make.outcome == 'failure'
+        run: | 
+          echo "::set-output name=fail::true"
+
 
       - name: Docker Commit
         run: |
@@ -256,7 +271,7 @@ jobs:
   make-10:
     name: Make 10
     needs: make-9
-    if: env.BUILD_FAIL == 'true'
+    if: needs.make-9.outputs.fail == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -270,9 +285,10 @@ jobs:
         run: |
           docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
 
-      - if: failure()
+      - if: steps.make.outcome == 'failure'
         run: | 
-          echo "BUILD_FAIL=true" >> $GITHUB_ENV
+          echo "::set-output name=fail::true"
+
 
       - name: Docker Commit
         run: |
@@ -282,7 +298,7 @@ jobs:
   make-11:
     name: Make 11
     needs: make-10
-    if: env.BUILD_FAIL == 'true'
+    if: needs.make-10.outputs.fail == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -296,9 +312,10 @@ jobs:
         run: |
           docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
 
-      - if: failure()
+      - if: steps.make.outcome == 'failure'
         run: | 
-          echo "BUILD_FAIL=true" >> $GITHUB_ENV
+          echo "::set-output name=fail::true"
+
 
       - name: Docker Commit
         run: |
@@ -308,7 +325,7 @@ jobs:
   make-12:
     name: Make 12
     needs: make-11
-    if: env.BUILD_FAIL == 'true'
+    if: needs.make-11.outputs.fail == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -322,9 +339,11 @@ jobs:
         run: |
           docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
 
-      - if: failure()
+
+      - if: steps.make.outcome == 'failure'
         run: | 
-          echo "BUILD_FAIL=true" >> $GITHUB_ENV
+          echo "::set-output name=fail::true"
+
 
       - name: Docker Commit
         run: |
