@@ -2,8 +2,8 @@ name: Build Docker
 
 on: push
 env:
-  NODE_VERSION: "v16.4.2"
-
+  - NODE_VERSION: "v16.4.2"
+  - TIMEOUT: "5.8h"
 
 jobs:
   configure:
@@ -38,17 +38,17 @@ jobs:
       - name: Make
         continue-on-error: true
         run: |
-          docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c 'timeout 1m make -j $(nproc); exit'
+          docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
 
       - name: Docker Commit
         run: |
-          # docker logs -f sn-container
           docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
           docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
 
   make-2:
     name: Make 2
     needs: make-1
+    if: failed()
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -58,11 +58,233 @@ jobs:
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
       - name: Make
+        continue-on-error: true
         run: |
-          docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c 'make -j $(nproc); exit'
+          docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
 
       - name: Docker Commit
         run: |
-          # docker logs -f sn-container
           docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
           docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+
+   make-3:
+    name: Make 3
+    needs: make-2
+    if: failed()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Make
+        continue-on-error: true
+        run: |
+          docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
+
+      - name: Docker Commit
+        run: |
+          docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+          docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+
+   make-4:
+    name: Make 4
+    needs: make-3
+    if: failed()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Make
+        continue-on-error: true
+        run: |
+          docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
+
+      - name: Docker Commit
+        run: |
+          docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+          docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+
+   make-5:
+    name: Make 5
+    needs: make-4
+    if: failed()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Make
+        continue-on-error: true
+        run: |
+          docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
+
+      - name: Docker Commit
+        run: |
+          docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+          docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+
+   make-6:
+    name: Make 6
+    needs: make-5
+    if: failed()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Make
+        continue-on-error: true
+        run: |
+          docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
+
+      - name: Docker Commit
+        run: |
+          docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+          docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+
+   make-7:
+    name: Make 7
+    needs: make-6
+    if: failed()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Make
+        continue-on-error: true
+        run: |
+          docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
+
+      - name: Docker Commit
+        run: |
+          docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+          docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+
+   make-8:
+    name: Make 8
+    needs: make-7
+    if: failed()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Make
+        continue-on-error: true
+        run: |
+          docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
+
+      - name: Docker Commit
+        run: |
+          docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+          docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+
+   make-9:
+    name: Make 9
+    needs: make-8
+    if: failed()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Make
+        continue-on-error: true
+        run: |
+          docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
+
+      - name: Docker Commit
+        run: |
+          docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+          docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+
+   make-10:
+    name: Make 10
+    needs: make-9
+    if: failed()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Make
+        continue-on-error: true
+        run: |
+          docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
+
+      - name: Docker Commit
+        run: |
+          docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+          docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+
+   make-11:
+    name: Make 11
+    needs: make-10
+    if: failed()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Make
+        continue-on-error: true
+        run: |
+          docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
+
+      - name: Docker Commit
+        run: |
+          docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+          docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+
+   make-12:
+    name: Make 12
+    needs: make-11
+    if: failed()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Make
+        continue-on-error: true
+        run: |
+          docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c "timeout $TIMEOUT make -j $(nproc); exit"
+
+      - name: Docker Commit
+        run: |
+          docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+          docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+
+          
