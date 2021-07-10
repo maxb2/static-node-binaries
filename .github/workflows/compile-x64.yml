@@ -37,7 +37,7 @@ jobs:
 
       - name: Make
         run: |
-          docker run -i --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c 'timeout 1m make -j $(nproc)'
+          docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c 'timeout 1m make -j $(nproc); exit'
 
       - name: Docker Commit
         run: |
@@ -58,7 +58,7 @@ jobs:
 
       - name: Make
         run: |
-          docker run -i --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c 'make -j $(nproc)'
+          docker run --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c 'make -j $(nproc); exit'
 
       - name: Docker Commit
         run: |
