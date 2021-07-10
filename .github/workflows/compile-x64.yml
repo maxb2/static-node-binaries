@@ -19,7 +19,7 @@ jobs:
       - name: Configure 
         run: |
           docker buildx build \
-            --load --push \
+            --push \
             --build-arg NODE_VERSION=${NODE_VERSION} \
             --target configure \
             -t ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial .
