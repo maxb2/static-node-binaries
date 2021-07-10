@@ -37,8 +37,8 @@ jobs:
 
       - name: Make
         run: |
-          CONTAINER=$(docker run ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c 'timeout 5m make -j $(nproc) || true')
-          docker logs -f $CONTAINER
+          CONTAINER=$(docker run -a ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c 'timeout 1m make -j $(nproc)')
+          # docker logs -f $CONTAINER
           docker container commit $CONTAINER ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
           docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
 
@@ -55,8 +55,8 @@ jobs:
 
       - name: Make
         run: |
-          CONTAINER=$(docker run ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c 'make -j $(nproc)')
-          docker logs -f $CONTAINER
+          CONTAINER=$(docker run -a ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c 'make -j $(nproc)')
+          # docker logs -f $CONTAINER
           docker container commit $CONTAINER ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
           docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
 
