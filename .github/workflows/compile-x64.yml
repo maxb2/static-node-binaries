@@ -37,12 +37,12 @@ jobs:
 
       - name: Make
         run: |
-          CONTAINER=$(docker run -i ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c 'timeout 1m make -j $(nproc)')
+          docker run -it --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c 'timeout 1m make -j $(nproc)'
 
       - name: Docker Commit
         run: |
-          # docker logs -f $CONTAINER
-          docker container commit $CONTAINER ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+          # docker logs -f sn-container
+          docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
           docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
 
   make-2:
@@ -58,10 +58,10 @@ jobs:
 
       - name: Make
         run: |
-          CONTAINER=$(docker run -i ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c 'make -j $(nproc)')
+          docker run -it --name sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial sh -c 'make -j $(nproc)'
 
       - name: Docker Commit
         run: |
-          # docker logs -f $CONTAINER
-          docker container commit $CONTAINER ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
+          # docker logs -f sn-container
+          docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
           docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
