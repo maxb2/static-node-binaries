@@ -2,8 +2,8 @@ name: Build Docker
 
 on: push
 env:
-  - NODE_VERSION: "v16.4.2"
-  - TIMEOUT: "5.8h"
+  NODE_VERSION: "v16.4.2"
+  TIMEOUT: "5.8h"
 
 jobs:
   configure:
