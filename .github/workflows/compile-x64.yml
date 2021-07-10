@@ -67,7 +67,7 @@ jobs:
           docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
           docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
 
-   make-3:
+  make-3:
     name: Make 3
     needs: make-2
     if: failed()
@@ -89,7 +89,7 @@ jobs:
           docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
           docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
 
-   make-4:
+  make-4:
     name: Make 4
     needs: make-3
     if: failed()
@@ -111,7 +111,7 @@ jobs:
           docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
           docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
 
-   make-5:
+  make-5:
     name: Make 5
     needs: make-4
     if: failed()
@@ -133,7 +133,7 @@ jobs:
           docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
           docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
 
-   make-6:
+  make-6:
     name: Make 6
     needs: make-5
     if: failed()
@@ -155,7 +155,7 @@ jobs:
           docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
           docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
 
-   make-7:
+  make-7:
     name: Make 7
     needs: make-6
     if: failed()
@@ -177,7 +177,7 @@ jobs:
           docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
           docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
 
-   make-8:
+  make-8:
     name: Make 8
     needs: make-7
     if: failed()
@@ -199,7 +199,7 @@ jobs:
           docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
           docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
 
-   make-9:
+  make-9:
     name: Make 9
     needs: make-8
     if: failed()
@@ -221,7 +221,7 @@ jobs:
           docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
           docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
 
-   make-10:
+  make-10:
     name: Make 10
     needs: make-9
     if: failed()
@@ -243,7 +243,7 @@ jobs:
           docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
           docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
 
-   make-11:
+  make-11:
     name: Make 11
     needs: make-10
     if: failed()
@@ -265,7 +265,7 @@ jobs:
           docker container commit sn-container ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
           docker image push ${{ secrets.DOCKER_REPO }}:${NODE_VERSION}-x64-partial
 
-   make-12:
+  make-12:
     name: Make 12
     needs: make-11
     if: failed()
