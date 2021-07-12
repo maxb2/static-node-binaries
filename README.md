@@ -78,10 +78,14 @@ NPROCS=1               # Number of processes to use during compilation PER PLATF
 docker buildx build --platform $PLATFORMs --load --build-arg NODE_VERSION=$NODE_VERSION --build-arg NPROCS=$NPROCS -t static-node:$NODE_VERSION .
 ```
 
-Then, we extract the binary for a  for a specific platform:
+Then, we extract the binary for a specific platform as follows.
+
+> Note: Do not use the `-t` or `-it` flags with the `docker run` command below,
+> as they cause binary files to be corrupted during the `cat >` operation.
+
 ```
 PLATFORM='linux/arm/v7'
-APP=$(docker run --platform $PLATFORM --rm -it -d static-node:$NODE_VERSION) 
-docker cp $APP:/usr/src/app/node/out/Release/node ./node-static-armv7-$PLATFORM-$NODE_VERSION
-docker kill $APP
+IN='/usr/src/app/node/out/Release/node'
+OUT=$(echo "node-static-$PLATFORM-$NODE_VERSION" | tr / -)
+docker run --platform $PLATFORM --rm static-node:$NODE_VERSION cat "$IN" > "$OUT"
 ```
