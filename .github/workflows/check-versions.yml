@@ -35,7 +35,7 @@ jobs:
           OLDIFS=$IFS
           IFS=' '
           LATEST=$(semver_max $(echo $VERSIONS | grep "v$(./semver get major ${{ matrix.version }})" | xargs ) )
-          if [ $(./semver compare $NODE_VERSION $LATEST) -eq -1 ]; then
+          if [ $(./semver compare ${{ matrix.version }} $LATEST) -eq -1 ]; then
             echo "There is a newer version of Node: ${{ matrix.version }} -> $LATEST"
           fi
 
