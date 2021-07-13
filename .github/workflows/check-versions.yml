@@ -1,0 +1,41 @@
+name: Check Node Versions
+
+on: push
+
+jobs:
+  configure:
+    name: Check Node ${{ matrix.version }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [v12.0.0, v14.0.0, v16.0.0]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Check Version 
+        run: |
+          curl -O https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
+          chmod +x semver
+
+          VERSIONS=$(curl -s https://nodejs.org/dist/ -o - | grep 'v[0-9].*' | sed -e 's/.*node-//' -e 's/\.tar\.gz.*//' -e 's/<[^>]*>//' -e 's/\/<[^>]*>.*//' -e 's/^latest.*//')
+          
+          semver_max () {
+            MAX=$1
+            for V in $@
+              do
+                if [ $(./semver compare $MAX $V) -eq -1 ]; then
+                  MAX=$V
+                fi
+              done
+            echo $MAX
+          }
+
+          OLDIFS=$IFS
+          IFS=' '
+          LATEST=$(semver_max $(echo $VERSIONS | grep "v$(./semver get major ${{ matrix.version }})" | xargs ) )
+          if [ $(./semver compare $NODE_VERSION $LATEST) -eq -1 ]; then
+          echo "There is a newer version of Node: ${{ matrix.version }} -> $LATEST"
+
+
