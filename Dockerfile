@@ -14,3 +14,6 @@ RUN ./configure --fully-static --enable-static
 FROM configure as compile
 ARG NPROCS=1
 RUN make -j ${NPROCS}
+
+FROM compile as test
+RUN make test
