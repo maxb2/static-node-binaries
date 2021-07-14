@@ -9,7 +9,7 @@ RUN git clone --depth 1 https://github.com/nodejs/node --branch ${NODE_VERSION} 
 
 FROM fetch as configure
 WORKDIR /usr/src/app/node
-RUN ./configure --fully-static --enable-static
+RUN if [ $(uname -m) = armv7l ]; then ./configure --fully-static --enable-static --openssl-no-asm; else ./configure --fully-static; fi
 
 FROM configure as compile
 ARG NPROCS=1
