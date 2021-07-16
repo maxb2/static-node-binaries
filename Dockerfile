@@ -1,5 +1,5 @@
 FROM debian as base
-RUN apt update && apt install build-essentials make git
+RUN apt update && apt install build-essential make git
 WORKDIR /usr/src/app
 
 FROM base as fetch
